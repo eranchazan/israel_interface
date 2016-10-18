@@ -6,7 +6,7 @@ var openstreetUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 var openstreet = new L.tileLayer(openstreetUrl, {maxZoom: zoomax});
 
 map.addLayer(openstreet);
-map.setView([31.787641, 35.206002],8);
+map.setView([31.787641, 35.206002],9);
 
 var armyBase =
 {
@@ -129853,7 +129853,7 @@ function style2(feature) {
 
 function style3(feature) {
     return {
-     color: ' #424242',
+     color: ' #4d4d4d',
          weight: 4.5,
          opacity: 0.9,
          fillOpacity: 0.1
@@ -129878,6 +129878,25 @@ function style5(feature) {
          fillOpacity: 0.1
       }
   };
+
+  function style5(feature) {
+    return {
+     color: '#0000FF',
+         weight: 4.5,
+         opacity: 0.9,
+         fillOpacity: 0.1
+      }
+  };
+
+  function style6(feature) {
+    return {
+     color: '#FFE33D',
+         weight: 4.5,
+         opacity: 0.9,
+         fillOpacity: 0.1
+      }
+  };
+
 function highlightFeatureA(border) {
 	var layer = border.target;
 	layer.setStyle ({
@@ -129936,6 +129955,22 @@ function highlightarmyBase(border) {
         layer.bringToFront();
     }
 };
+
+function highlightUN(border) {
+  var layer = border.target;
+  layer.setStyle ({
+    weight: 10,
+        color: '#FFE33D',
+        fillOpacity: 0.3
+})
+ if (!L.Browser.ie && !L.Browser.opera) {
+        layer.bringToFront();
+    }
+};
+
+function resetUN(border) {
+    undof.resetStyle(border.target);
+}
 
  function resetsecurityFence(border) {
     securityFence.resetStyle(border.target);
@@ -130008,9 +130043,19 @@ function onEachFeaturesecurityFence(feature, layer) {
     }
 };
 
+function onEachFeatureUN(feature, layer) {
+    layer.on({
+        mouseover: highlightUN,
+        mouseout: resetUN,
+    })  
+    if (feature.properties.popupContent) {
+        layer.bindPopup(features.properties.popupContent);
+    }
+};
+
 var undof = L.geoJson(undof, {
-    style: style3,
-    onEachFeature: onEachFeaturesecurityFence
+    style: style6,
+    onEachFeature: onEachFeatureUN
 }).addTo(map);
 
 var securityFence = L.geoJson(securityFence, {
@@ -130042,4 +130087,32 @@ var armyBase = L.geoJson(armyBase, {
     style: style5,
     onEachFeature: onEachFeaturearmyBase
 }).addTo(map);
+
+  
+function getColor(d) {
+    return d == "Area A: Palestinian Security Control" ? '#FF0000' :
+           d == "Area B: Palestinian Civil Control"  ? '#ee940a' :
+           d == "United Nations Disengagement Zone" ? '#FFE33D' :
+           d == "Israeli Military Base" ? 'blue' :
+           d  == "Green Line (1967 Ceasfire Line)" ? '#22ff00' :
+           d  == "Seperation Wall" ? '#3c3c3c' :
+                                      '#3c3c3c';         
+}
+
+var legend = L.control({position: 'topleft'});
+
+legend.onAdd = function (map) {
+  var div = L.DomUtil.create('div', 'info legend');
+    categories = ['Area A: Palestinian Security Control','Area B: Palestinian Civil Control','United Nations Disengagement Zone','Israeli Military Base', 'Green Line (1967 Ceasfire Line)', "Security Wall"]
+
+    for (var i = 0; i < categories.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + getColor(categories[i]) + '"></i> ' +
+             (categories[i] ? categories[i] + '<br>' : '+');
+    }
+
+    return div;
+};
+
+legend.addTo(map); 
 
