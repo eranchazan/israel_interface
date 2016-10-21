@@ -9,7 +9,7 @@ html, body, #map{
 
 .legend {
     line-height: 18px;
-    color: #555;
+    color: black;
 }
 .legend i {
     width: 18px;

@@ -2,10 +2,32 @@ var map = L.map('map');
 var zoomax = 18;
 var serverIP = '';
 
+var googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
+    // maxZoom: 20,
+    subdomains:['mt0','mt1','mt2','mt3']
+});
+
 var openstreetUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 var openstreet = new L.tileLayer(openstreetUrl, {maxZoom: zoomax});
-
 map.addLayer(openstreet);
+
+var stamenWaterURL = 'http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png';
+var stamenLayer = L.tileLayer(stamenWaterURL, {maxZoom: zoomax, attribution: false });
+map.addLayer(stamenLayer);
+
+
+
+var baseLayers = {
+  "Satellite": googleSat,
+  "openstreetmap": openstreet,
+  "Water Color" : stamenLayer
+  };
+var overlays = {
+
+  };
+L.control.layers(baseLayers, overlays).addTo(map);
+
+
 map.setView([31.787641, 35.206002],9);
 
 var armyBase =
@@ -129961,7 +129983,7 @@ function highlightUN(border) {
   layer.setStyle ({
     weight: 10,
         color: '#FFE33D',
-        fillOpacity: 0.3
+        fillOpacity: 0.6
 })
  if (!L.Browser.ie && !L.Browser.opera) {
         layer.bringToFront();
@@ -130094,7 +130116,7 @@ function getColor(d) {
            d == "Area B: Palestinian Civil Control"  ? '#ee940a' :
            d == "United Nations Disengagement Zone" ? '#FFE33D' :
            d == "Israeli Military Base" ? 'blue' :
-           d  == "Green Line (1967 Ceasfire Line)" ? '#22ff00' :
+           d  == "Green Line (1949 Ceasfire Line)" ? '#22ff00' :
            d  == "Seperation Wall" ? '#3c3c3c' :
                                       '#3c3c3c';         
 }
@@ -130103,7 +130125,7 @@ var legend = L.control({position: 'topleft'});
 
 legend.onAdd = function (map) {
   var div = L.DomUtil.create('div', 'info legend');
-    categories = ['Area A: Palestinian Security Control','Area B: Palestinian Civil Control','United Nations Disengagement Zone','Israeli Military Base', 'Green Line (1967 Ceasfire Line)', "Security Wall"]
+    categories = ['Area A: Palestinian Security Control','Area B: Palestinian Civil Control','United Nations Disengagement Zone','Israeli Military Base', 'Green Line (1949 Ceasfire Line)', "Security Wall"]
 
     for (var i = 0; i < categories.length; i++) {
         div.innerHTML +=
