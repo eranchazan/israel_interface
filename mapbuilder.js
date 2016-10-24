@@ -2,25 +2,27 @@ var map = L.map('map');
 var zoomax = 18;
 var serverIP = '';
 
-var googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
-    // maxZoom: 20,
-    subdomains:['mt0','mt1','mt2','mt3']
-});
+
+
 
 var openstreetUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 var openstreet = new L.tileLayer(openstreetUrl, {maxZoom: zoomax});
 map.addLayer(openstreet);
 
 var stamenWaterURL = 'http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png';
-var stamenLayer = L.tileLayer(stamenWaterURL, {maxZoom: zoomax, attribution: false });
+var stamenLayer = new L.tileLayer(stamenWaterURL, {maxZoom: zoomax, attribution: false });
 map.addLayer(stamenLayer);
 
-
+var googleSat = new L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
+    // maxZoom: 20,
+    subdomains:['mt0','mt1','mt2','mt3']
+});
+map.addLayer(googleSat);
 
 var baseLayers = {
-  "Satellite": googleSat,
   "openstreetmap": openstreet,
-  "Water Color" : stamenLayer
+  "Water Color" : stamenLayer,
+  "Satellite": googleSat
   };
 var overlays = {
 
@@ -129875,7 +129877,7 @@ function style2(feature) {
 
 function style3(feature) {
     return {
-     color: ' #4d4d4d',
+     color: 'black',
          weight: 4.5,
          opacity: 0.9,
          fillOpacity: 0.1
@@ -130117,8 +130119,8 @@ function getColor(d) {
            d == "United Nations Disengagement Zone" ? '#FFE33D' :
            d == "Israeli Military Base" ? 'blue' :
            d  == "Green Line (1949 Ceasfire Line)" ? '#22ff00' :
-           d  == "Seperation Wall" ? '#3c3c3c' :
-                                      '#3c3c3c';         
+           d  == "Security Wall" ? 'black' :
+                                      'black';         
 }
 
 var legend = L.control({position: 'topleft'});
