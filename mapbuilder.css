@@ -1,14 +1,17 @@
 
-html, body, #map{
+html, body, #map {
      height: 100%;
      width: 100%;
      margin: 0;
      padding: 0;
-    }
+}
 
 
 .legend {
     line-height: 18px;
+    color: gold;
+}
+.title h2 {
     color: gold;
 }
 .legend i {
@@ -18,7 +21,9 @@ html, body, #map{
     margin-right: 8px;
     opacity: 0.7;
 }
+
 br {
   line-height:2em;/* chrome for instance */
 }
+
 

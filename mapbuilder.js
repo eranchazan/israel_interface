@@ -130121,7 +130121,17 @@ function getColor(d) {
            d  == "Green Line (1949 Ceasfire Line)" ? '#22ff00' :
            d  == "Security Wall" ? 'black' :
                                       'black';         
-}
+};
+
+var title = L.control({position: 'topleft'});
+
+title.onAdd = function (map) {
+  var div = L.DomUtil.create('div', 'title');
+  div.innerHTML +='<h2>Israeli Security and Political Boundaries</h2>'
+return div;
+};
+
+title.addTo(map);
 
 var legend = L.control({position: 'topleft'});
 
